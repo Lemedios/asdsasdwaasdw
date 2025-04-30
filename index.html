@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Pastebin Clone</title>
+</head>
+<body>
+  <h1>文字アップロード</h1>
+  <textarea id="pasteText" rows="10" cols="50"></textarea><br>
+  <button onclick="downloadPaste()">アップロード</button>
+
+  <script>
+    function downloadPaste() {
+      const text = document.getElementById('pasteText').value;
+      const id = Math.random().toString(36).substr(2, 8); // 簡易な一意ID
+      const data = { id, text, created: new Date().toISOString() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${id}.json`;
+      a.click();
+
+      alert(`保存されたファイルを /pastes/${id}.json にアップロードしてください。\n表示ページは view.html?id=${id} です。`);
+    }
+  </script>
+</body>
+</html>
