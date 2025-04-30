@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Paste表示</title>
+</head>
+<body>
+  <h1>共有テキスト</h1>
+  <pre id="output">読み込み中...</pre>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (!id) {
+      document.getElementById("output").innerText = "IDが指定されていません。";
+    } else {
+      fetch(`pastes/${id}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error("ファイルが見つかりません");
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById("output").innerText = data.text;
+        })
+        .catch(err => {
+          document.getElementById("output").innerText = `エラー: ${err.message}`;
+        });
+    }
+  </script>
+</body>
+</html>
